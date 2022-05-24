@@ -3,11 +3,16 @@ package com.example;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Form extends JFrame {
+    static BDmodel bd = new BDmodel(BD.DBConnection());
     // de créer une fenetre de formulaire
     // contenant des inputs afin de remplir d'informations
     // la BDD
@@ -31,10 +36,14 @@ public class Form extends JFrame {
     JButton envoyer = new JButton("Envoyer");
     JButton select = new JButton("Select");
 
+    DefaultTableModel model = new DefaultTableModel();
+    JScrollPane scrollPane = new JScrollPane();
+    JTable table = new JTable();
+
 
     public Form() {
         super("Formulaire");
-        setSize(400, 400);
+        setSize(400, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
@@ -58,8 +67,18 @@ public class Form extends JFrame {
         envoyer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                BDmodel bd = new BDmodel(BD.DBConnection());
                 bd.insert(nom.getText(), prenom.getText(), age.getText(), sexe.getText(), adresse.getText(), codePostale.getText(), ville.getText());
+                // reaficher la table suite INSERT
+                model = bd.buildTableModel(bd.selectRS());
+                table.setModel(model);
+                System.out.println("reload");
+                nom.setText("");
+                prenom.setText("");
+                age.setText("");
+                sexe.setText("");
+                adresse.setText("");
+                codePostale.setText("");
+                ville.setText("");
             }
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -70,10 +89,13 @@ public class Form extends JFrame {
         select.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                BDmodel bd = new BDmodel(BD.DBConnection());
                 bd.select();
             }
         });
+        model = bd.buildTableModel(bd.selectRS());
+        table = new JTable(model); // Création du JTable (data, columnNames)
+        scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(10, 300, 355, 400);
 
         add(labelNom);
         add(labelPrenom);
@@ -92,7 +114,9 @@ public class Form extends JFrame {
         add(ville);
 
         add(envoyer);
-        add(select);
+        //add(select);
+        
+        add(scrollPane);
     }
 
 }

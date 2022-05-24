@@ -1,6 +1,6 @@
 package com.example;
 
-public class personne {
+public class Personne {
     String nom;
     String Prenom;
     String Age;
@@ -9,7 +9,7 @@ public class personne {
     String CodePostale;
     String Ville;
 
-    public personne(String nom, String Prenom, String Age, String Sexe, String Adresse, String CodePostale, String Ville) {
+    public Personne(String nom, String Prenom, String Age, String Sexe, String Adresse, String CodePostale, String Ville) {
         this.nom = nom;
         this.Prenom = Prenom;
         this.Age = Age;

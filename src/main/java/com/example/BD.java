@@ -17,6 +17,8 @@ public class BD {
         } catch (Exception e) {
             System.out.println("Erreur de connexion BDD " + e.getMessage());
             //e.printStackTrace();
+            // Permet de fermer l'application si BDD non Connecté
+            System.exit(-1);
         }
         return conn;
     }
